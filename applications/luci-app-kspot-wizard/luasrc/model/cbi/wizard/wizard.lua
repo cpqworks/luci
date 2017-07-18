@@ -265,11 +265,17 @@ s.addremove = false
 s.anonymous = false
 s.optional = false
 
-e = s:option(Value, "ipaddr", translate("<abbr title=\"Internet Protocol Version 4\">IPv4</abbr>-Address"))
-e.default = "192.168.0.1"
-e.rmempty = false
-e.optional = true
-e.datatype = "ip4addr"
+lan_ip = s:option(Value, "ipaddr", translate("<abbr title=\"Internet Protocol Version 4\">IPv4</abbr>-Address"))                           
+lan_ip.default = "192.168.0.1"                                                                                                             
+lan_ip.rmempty = false                                                                                                                     
+lan_ip.optional = true                                                                                                                     
+lan_ip.datatype = "ip4addr"                                                                                                                
+                                                                                                                                           
+function lan_ip.write(self, section, data)                                                                                                 
+    uci:set("network", "lan", "ipaddr", data)                                                                                              
+    uci:set("network", "lan", "gateway", data)                                                                                             
+    return uci:save("network")                                                                                                             
+end
 
 e = s:option(Value, "netmask", translate("Netmask")) 
 e.default = "255.255.255.0"
@@ -279,11 +285,6 @@ e.datatype = "ip4addr"
 e:value("255.255.255.0")
 e:value("255.255.0.0")
 e:value("255.0.0.0")
-
-e = s:option(Value, "gateway", translate("Gateway"))
-e.rmempty = true
-e.optional = true
-e.datatype = "ip4addr"
 
 d = Map("dhcp")
 
