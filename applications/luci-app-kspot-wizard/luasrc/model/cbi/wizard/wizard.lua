@@ -271,7 +271,7 @@ e.rmempty = false
 e.optional = true
 e.datatype = "ip4addr"
 
-e = s:option(Value, "netmask", translate("<abbr title=\"Internet Protocol Version 4\">IPv4</abbr>-Address")) 
+e = s:option(Value, "netmask", translate("Netmask")) 
 e.default = "255.255.255.0"
 e.rmempty = false
 e.optional = true
@@ -279,6 +279,11 @@ e.datatype = "ip4addr"
 e:value("255.255.255.0")
 e:value("255.255.0.0")
 e:value("255.0.0.0")
+
+e = s:option(Value, "gateway", translate("Gateway"))
+e.rmempty = true
+e.optional = true
+e.datatype = "ip4addr"
 
 d = Map("dhcp")
 
