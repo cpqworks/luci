@@ -272,8 +272,8 @@ lan_ip.optional = true
 lan_ip.datatype = "ip4addr"                                                                                                                
                                                                                                                                            
 function lan_ip.write(self, section, data)                                                                                                 
-    uci:set("network", "lan", "ipaddr", data)                                                                                              
-    uci:set("network", "lan", "gateway", data)                                                                                             
+    uci:set("network", lan_name, "ipaddr", data)                                                                                              
+    uci:set("network", lan_name, "gateway", data)                                                                                             
     return uci:save("network")                                                                                                             
 end
 
