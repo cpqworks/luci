@@ -18,8 +18,8 @@ function index()
 		entry({"admin", "system", "packages", "ipkg"}, form("admin_system/ipkg"))
 	end
 
-	entry({"admin", "system", "startup"}, form("admin_system/startup"), _("Startup"), 45)
-	entry({"admin", "system", "crontab"}, form("admin_system/crontab"), _("Scheduled Tasks"), 46)
+--	entry({"admin", "system", "startup"}, form("admin_system/startup"), _("Startup"), 45)
+--	entry({"admin", "system", "crontab"}, form("admin_system/crontab"), _("Scheduled Tasks"), 46)
 
 	if fs.access("/sbin/block") and fs.access("/etc/config/fstab") then
 		entry({"admin", "system", "fstab"}, cbi("admin_system/fstab"), _("Mount Points"), 50)
@@ -31,10 +31,10 @@ function index()
 		entry({"admin", "system", "leds"}, cbi("admin_system/leds"), _("<abbr title=\"Light Emitting Diode\">LED</abbr> Configuration"), 60)
 	end
 
-	entry({"admin", "system", "flashops"}, call("action_flashops"), _("Backup / Flash Firmware"), 70)
+	entry({"admin", "system", "flashops"}, call("action_flashops"), _("Reset / Flash Firmware"), 70)
 	entry({"admin", "system", "flashops", "reset"}, post("action_reset"))
-	entry({"admin", "system", "flashops", "backup"}, post("action_backup"))
-	entry({"admin", "system", "flashops", "backupfiles"}, form("admin_system/backupfiles"))
+--	entry({"admin", "system", "flashops", "backup"}, post("action_backup"))
+--	entry({"admin", "system", "flashops", "backupfiles"}, form("admin_system/backupfiles"))
 
 	-- call() instead of post() due to upload handling!
 	entry({"admin", "system", "flashops", "restore"}, call("action_restore"))
@@ -179,6 +179,7 @@ function action_packages()
 end
 
 local function image_supported(image)
+	
 	return (os.execute("sysupgrade -T %q >/dev/null" % image) == 0)
 end
 
@@ -270,7 +271,11 @@ function action_sysupgrade()
 	--
 	-- Initiate firmware flash
 	--
+	local otastep = luci.http.formvalue("ota")
 	local step = tonumber(http.formvalue("step") or 1)
+	if otastep then
+		step = 0
+	end	
 	if step == 1 then
 		if image_supported(image_tmp) then
 			luci.template.render("admin_system/upgrade", {
@@ -299,7 +304,7 @@ function action_sysupgrade()
 			addr  = (#keep > 0) and "192.168.1.1" or nil
 		})
 		fork_exec("sleep 1; killall dropbear uhttpd; sleep 1; /sbin/sysupgrade %s %q" %{ keep, image_tmp })
-	elseif upgrade_avail and luci.http.formvalue("ota") then
+	elseif step == 0 then
 		--
 		-- OTA
 		--

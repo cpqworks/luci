@@ -21,7 +21,8 @@ $Id$
 
 	<fieldset class="cbi-section">
 		<legend><%:Reset%></legend>
-		<form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
+		<form method="post" action="<%=url('admin/system/flashops/reset')%>" enctype="multipart/form-data">
+			<input type="hidden" name="token" value="<%=token%>" />
 			<div class="cbi-section-descr"><%:Click "Perform reset" to reset the firmware to its initial state, click "Perform reset" (only possible with squashfs images).%></div>
 			<div class="cbi-section-node">
 				<% if reset_avail then %>
@@ -42,7 +43,8 @@ $Id$
 	<fieldset class="cbi-section">
 		<legend><%:Flash new firmware image%></legend>
 		<% if upgrade_avail then %>
-			<form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">
+			<form method="post" action="<%=url('admin/system/flashops/sysupgrade')%>" enctype="multipart/form-data">
+				<input type="hidden" name="token" value="<%=token%>" />
 				<div class="cbi-section-descr"><%:Upload a sysupgrade-compatible image here to replace the running firmware. Check "Keep settings" to retain the current configuration (requires an OpenWrt compatible firmware image).%></div>
 				<div class="cbi-section-node">
 					<div class="cbi-value">
@@ -74,7 +76,8 @@ $Id$
         <fieldset class="cbi-section">                                                                                                                                                           
                 <legend><%:Over The Air (OTA) firmware upgrade%></legend>                                                                                                                                   
                 <% if upgrade_avail then %>                                                                                                                                                      
-                        <form method="post" action="<%=REQUEST_URI%>" enctype="multipart/form-data">                                                                                             
+                        <form method="post" action="<%=url('admin/system/flashops/sysupgrade')%>" enctype="multipart/form-data">
+                        		<input type="hidden" name="token" value="<%=token%>" />                                                                                             
                                 <div class="cbi-section-descr"><%:WARNING: This action may permanentely brick your router, do it on own risk. Enter Secret Key only if it has been provided by the ISP or Seller. DO NOT POWER OFF THE DEVICE %></div> 
                                 <div class="cbi-section-node"> 
                                 		<div class="cbi-value">
@@ -92,12 +95,12 @@ $Id$
 												<br/>
 												<label class="cbi-value-title" ></label>
 												<div class="cbi-value-field">
-														<input onclick="return confirm('<%:Really want to upgrade? <BR/>Firmware download may take some time depened on your internet speed, please do not refresh or resubmit again.%>')" type="submit" class="cbi-button cbi-input-apply" name="ota" value="<%:Upgarde with latest Version...%>" />                                                   
+														<input onclick="return confirm('<%:Really want to upgrade? Firmware download may take some time depened on your internet speed, please do not refresh or resubmit again.%>')" type="submit" class="cbi-button cbi-input-apply" name="ota" value="<%:Upgarde with latest Version...%>" />                                                   
                                                 </div>                                                                                                                                           
                                         </div>                                                                                                                                                   
                                 </div> 
                                 <% if ota_invalid then %>
-									<div class="cbi-section-error"><%:Sorry, either there is no OTA firmware avaialble for this device or the Secret key (if provided) is invalid %></div>
+									<div class="cbi-section-error"><%:Sorry, either there is no OTA firmware available for this device or the Secret key (if provided) is invalid %></div>
 								<% end %>                                                                                                                                                          
                         </form>                                                                                                                                                                  
                 <% else %>                                                                                                                                                                       
