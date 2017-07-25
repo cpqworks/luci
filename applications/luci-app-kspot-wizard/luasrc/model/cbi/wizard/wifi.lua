@@ -116,8 +116,8 @@ s = m:section(NamedSection, wdev:name(), "wifi-device", translate("Device Config
 s.addremove = false
 
 s:tab("general", translate("General Setup"))
-s:tab("macfilter", translate("MAC-Filter"))
-s:tab("advanced", translate("Advanced Settings"))
+--s:tab("macfilter", translate("MAC-Filter"))
+--s:tab("advanced", translate("Advanced Settings"))
 
 --[[
 back = s:option(DummyValue, "_overview", translate("Overview"))
@@ -216,7 +216,7 @@ if hwtype == "mac80211" then
 				%{ p.display_dbm, p.display_mw })
 		end
 	end
-
+--[[
 	local cl = iw and iw.countrylist
 	if cl and #cl > 0 then
 		cc = s:taboption("advanced", ListValue, "country", translate("Country Code"), translate("Use ISO/IEC 3166 alpha2 country codes."))
@@ -245,6 +245,7 @@ if hwtype == "mac80211" then
 
 	s:taboption("advanced", Value, "frag", translate("Fragmentation Threshold"))
 	s:taboption("advanced", Value, "rts", translate("RTS/CTS Threshold"))
+]]--	
 end
 
 
@@ -268,7 +269,7 @@ if hwtype == "broadcom" then
 			%{ p.display_dbm, p.display_mw })
 	end
 
-	mode = s:taboption("advanced", ListValue, "hwmode", translate("Band"))
+--[[	mode = s:taboption("advanced", ListValue, "hwmode", translate("Band"))
 	if hw_modes.b then
 		mode:value("11b", "2.4GHz (802.11b)")
 		if hw_modes.g then
@@ -319,18 +320,19 @@ if hwtype == "broadcom" then
 
 	s:taboption("advanced", Value, "country", translate("Country Code"))
 	s:taboption("advanced", Value, "maxassoc", translate("Connection Limit"))
+	]]--
 end
 
 
 --------------------- HostAP Device ---------------------
 
 if hwtype == "prism2" then
-	s:taboption("advanced", Value, "txpower", translate("Transmit Power"), "att units").rmempty = true
+--[[	s:taboption("advanced", Value, "txpower", translate("Transmit Power"), "att units").rmempty = true
 
 	s:taboption("advanced", Flag, "diversity", translate("Diversity")).rmempty = false
 
 	s:taboption("advanced", Value, "txantenna", translate("Transmitter Antenna"))
-	s:taboption("advanced", Value, "rxantenna", translate("Receiver Antenna"))
+	s:taboption("advanced", Value, "rxantenna", translate("Receiver Antenna"))]]--
 end
 
 
@@ -344,21 +346,22 @@ s.defaults.device = wdev:name()
 
 s:tab("general", translate("General Setup"))
 s:tab("encryption", translate("Wireless Security"))
-s:tab("macfilter", translate("MAC-Filter"))
-s:tab("advanced", translate("Advanced Settings"))
+--s:tab("macfilter", translate("MAC-Filter"))
+--s:tab("advanced", translate("Advanced Settings"))
 
 ssid = s:taboption("general", Value, "ssid", translate("<abbr title=\"Extended Service Set Identifier\">ESSID</abbr>"))
 ssid.datatype = "maxlength(32)"
 
+
 mode = s:taboption("general", ListValue, "mode", translate("Mode"))
 mode.override_values = true
 mode:value("ap", translate("Access Point"))
-mode:value("sta", translate("Client"))
+--[[mode:value("sta", translate("Client"))
 mode:value("adhoc", translate("Ad-Hoc"))
-
+]]--
 bssid = s:taboption("general", Value, "bssid", translate("<abbr title=\"Basic Service Set Identifier\">BSSID</abbr>"))
 
-network = s:taboption("general", Value, "network", translate("Network"),
+--[[network = s:taboption("general", Value, "network", translate("Network"),
 	translate("Choose the network(s) you want to attach to this wireless interface or " ..
 		"fill out the <em>create</em> field to define a new network."))
 
@@ -397,21 +400,21 @@ function network.write(self, section, value)
 		end
 	end
 end
-
+]]--
 -------------------- MAC80211 Interface ----------------------
 
 if hwtype == "mac80211" then
-	if fs.access("/usr/sbin/iw") then
+--[[	if fs.access("/usr/sbin/iw") then
 		mode:value("mesh", "802.11s")
 	end
 
 	mode:value("ahdemo", translate("Pseudo Ad-Hoc (ahdemo)"))
-	mode:value("monitor", translate("Monitor"))
+	mode:value("monitor", translate("Monitor"))]]--
 	bssid:depends({mode="adhoc"})
 	bssid:depends({mode="sta"})
 	bssid:depends({mode="sta-wds"})
 
-	mp = s:taboption("macfilter", ListValue, "macfilter", translate("MAC-Address Filter"))
+--[[	mp = s:taboption("macfilter", ListValue, "macfilter", translate("MAC-Address Filter"))
 	mp:depends({mode="ap"})
 	mp:depends({mode="ap-wds"})
 	mp:value("", translate("disable"))
@@ -452,7 +455,7 @@ if hwtype == "mac80211" then
 			return mode
 		end
 	end
-
+]]--
 	hidden = s:taboption("general", Flag, "hidden", translate("Hide <abbr title=\"Extended Service Set Identifier\">ESSID</abbr>"))
 	hidden:depends({mode="ap"})
 	hidden:depends({mode="ap-wds"})
@@ -462,29 +465,29 @@ if hwtype == "mac80211" then
 	wmm:depends({mode="ap-wds"})
 	wmm.default = wmm.enabled
 	
-	ifname = s:taboption("advanced", Value, "ifname", translate("Interface name"), translate("Override default interface name"))
-	ifname.optional = true
+--	ifname = s:taboption("advanced", Value, "ifname", translate("Interface name"), translate("Override default interface name"))
+--	ifname.optional = true
 end
 
 
 -------------------- Broadcom Interface ----------------------
 
 if hwtype == "broadcom" then
-	mode:value("wds", translate("WDS"))
-	mode:value("monitor", translate("Monitor"))
+--	mode:value("wds", translate("WDS"))
+--	mode:value("monitor", translate("Monitor"))
 
 	hidden = s:taboption("general", Flag, "hidden", translate("Hide <abbr title=\"Extended Service Set Identifier\">ESSID</abbr>"))
 	hidden:depends({mode="ap"})
 	hidden:depends({mode="adhoc"})
 	hidden:depends({mode="wds"})
 
-	isolate = s:taboption("advanced", Flag, "isolate", translate("Separate Clients"),
+--[[	isolate = s:taboption("advanced", Flag, "isolate", translate("Separate Clients"),
 	 translate("Prevents client-to-client communication"))
 	isolate:depends({mode="ap"})
 
 	s:taboption("advanced", Flag, "doth", "802.11h")
 	s:taboption("advanced", Flag, "wmm", translate("WMM Mode"))
-
+]]--
 	bssid:depends({mode="wds"})
 	bssid:depends({mode="adhoc"})
 end
@@ -493,8 +496,8 @@ end
 ----------------------- HostAP Interface ---------------------
 
 if hwtype == "prism2" then
-	mode:value("wds", translate("WDS"))
-	mode:value("monitor", translate("Monitor"))
+--	mode:value("wds", translate("WDS"))
+--	mode:value("monitor", translate("Monitor"))
 
 	hidden = s:taboption("general", Flag, "hidden", translate("Hide <abbr title=\"Extended Service Set Identifier\">ESSID</abbr>"))
 	hidden:depends({mode="ap"})
@@ -503,7 +506,7 @@ if hwtype == "prism2" then
 
 	bssid:depends({mode="sta"})
 
-	mp = s:taboption("macfilter", ListValue, "macpolicy", translate("MAC-Address Filter"))
+--[[	mp = s:taboption("macfilter", ListValue, "macpolicy", translate("MAC-Address Filter"))
 	mp:value("", translate("disable"))
 	mp:value("allow", translate("Allow listed only"))
 	mp:value("deny", translate("Allow all except listed"))
@@ -514,7 +517,7 @@ if hwtype == "prism2" then
 
 	s:taboption("advanced", Value, "rate", translate("Transmission Rate"))
 	s:taboption("advanced", Value, "frag", translate("Fragmentation Threshold"))
-	s:taboption("advanced", Value, "rts", translate("RTS/CTS Threshold"))
+	s:taboption("advanced", Value, "rts", translate("RTS/CTS Threshold"))]]--
 end
 
 

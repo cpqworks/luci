@@ -25,7 +25,7 @@ gateway = section:taboption("general", Value, "gateway", translate("IPv4 gateway
 gateway.datatype = "ip4addr"
 
 
-broadcast = section:taboption("general", Value, "broadcast", translate("IPv4 broadcast"))
+--[[broadcast = section:taboption("general", Value, "broadcast", translate("IPv4 broadcast"))
 broadcast.datatype = "ip4addr"
 
 
@@ -64,9 +64,9 @@ if luci.model.network:has_ipv6() then
 	ip6prefix:depends("ip6assign", "")
 
 end
+]]--
 
-
-luci.tools.proto.opt_macaddr(section, ifc, translate("Override MAC address"))
+--luci.tools.proto.opt_macaddr(section, ifc, translate("Override MAC address"))
 
 
 mtu = section:taboption("advanced", Value, "mtu", translate("Override MTU"))

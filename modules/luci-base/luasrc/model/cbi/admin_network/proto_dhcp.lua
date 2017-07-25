@@ -15,7 +15,7 @@ hostname.placeholder = luci.sys.hostname()
 hostname.datatype    = "hostname"
 
 
-bcast = section:taboption("advanced", Flag, "broadcast",
+--[[bcast = section:taboption("advanced", Flag, "broadcast",
 	translate("Use broadcast flag"),
 	translate("Required for certain ISPs, e.g. Charter with DOCSIS 3"))
 
@@ -60,7 +60,7 @@ vendorclass = section:taboption("advanced", Value, "vendorid",
 
 
 luci.tools.proto.opt_macaddr(section, ifc, translate("Override MAC address"))
-
+]]--
 
 mtu = section:taboption("advanced", Value, "mtu", translate("Override MTU"))
 mtu.placeholder = "1500"

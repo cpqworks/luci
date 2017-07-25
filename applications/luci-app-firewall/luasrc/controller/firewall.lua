@@ -25,20 +25,20 @@ function index()
 
 	if user("Firewall") == true then
 	entry({"admin", "network", "firewall"},
-		alias("admin", "network", "firewall", "zones"),
+		alias("admin", "network", "firewall", "forwards"),
 		_("Firewall"), 60)
 
-	entry({"admin", "network", "firewall", "zones"},
-		arcombine(cbi("firewall/zones"), cbi("firewall/zone-details")),
-		_("General Settings"), 10).leaf = true
+--	entry({"admin", "network", "firewall", "zones"},
+--		arcombine(cbi("firewall/zones"), cbi("firewall/zone-details")),
+--		_("General Settings"), 10).leaf = true
 
 	entry({"admin", "network", "firewall", "forwards"},
 		arcombine(cbi("firewall/forwards"), cbi("firewall/forward-details")),
 		_("Port Forwards"), 20).leaf = true
 
-	entry({"admin", "network", "firewall", "rules"},
-		arcombine(cbi("firewall/rules"), cbi("firewall/rule-details")),
-		_("Traffic Rules"), 30).leaf = true
+--	entry({"admin", "network", "firewall", "rules"},
+--		arcombine(cbi("firewall/rules"), cbi("firewall/rule-details")),
+--		_("Traffic Rules"), 30).leaf = true
 
 --	entry({"admin", "network", "firewall", "custom"},
 --		cbi("firewall/custom"),

@@ -29,7 +29,7 @@ service = section:taboption("general", Value, "service",
 service.placeholder = translate("auto")
 
 
-if luci.model.network:has_ipv6() then
+--[[if luci.model.network:has_ipv6() then
 
         ipv6 = section:taboption("advanced", ListValue, "ipv6")
         ipv6:value("auto", translate("Automatic"))
@@ -113,7 +113,7 @@ keepalive_failure.remove       = keepalive_interval.write
 keepalive_interval.placeholder = "5"
 keepalive_interval.datatype    = "min(1)"
 
-
+]]--
 demand = section:taboption("advanced", Value, "demand",
 	translate("Inactivity timeout"),
 	translate("Close inactive connection after the given amount of seconds, use 0 to persist connection"))

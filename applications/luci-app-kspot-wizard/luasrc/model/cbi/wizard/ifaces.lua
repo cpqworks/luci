@@ -155,9 +155,9 @@ s.addremove = false
 s:tab("general",  translate("General Setup"))
 s:tab("advanced", translate("Advanced Settings"))
 
-if has_firewall then
-	s:tab("firewall", translate("Firewall Settings"))
-end
+--if has_firewall then
+--	s:tab("firewall", translate("Firewall Settings"))
+--end
 
 
 st = s:taboption("general", DummyValue, "__status", translate("Status"))
@@ -178,8 +178,14 @@ end
 m.on_init = set_status
 m.on_after_save = set_status
 
-p = s:taboption("general", ListValue, "proto", translate("Protocol"))
+p = s:option("general", ListValue, "proto", translate("Protocol"))
 p.default = net:proto()
+p:value("dhcp", "DHCP Client")    
+p:value("static", "Static Address")       
+p:value("pppoe", "PPPoE") 
+
+--p = s:taboption("general", ListValue, "proto", translate("Protocol"))
+--p.default = net:proto()
 
 
 if not net:is_installed() then
@@ -205,13 +211,13 @@ p_switch.inputstyle = "apply"
 
 local _, pr
 for _, pr in ipairs(nw:get_protocols()) do
-	p:value(pr:proto(), pr:get_i18n())
+	--p:value(pr:proto(), pr:get_i18n())
 	if pr:proto() ~= net:proto() then
 		p_switch:depends("proto", pr:proto())
 	end
 end
 
-
+--[[
 auto = s:taboption("advanced", Flag, "auto", translate("Bring up on boot"))
 auto.default = (net:proto() == "none") and auto.disabled or auto.enabled
 
@@ -258,8 +264,9 @@ if has_firewall then
 			zone:add_network(section)
 		end
 	end
+	
 end
-
+]]--
 
 function p.write() end
 function p.remove() end
@@ -341,16 +348,16 @@ if has_dnsmasq and net:proto() == "static" then
 		s.addremove = false
 		s.anonymous = true
 		s:tab("general",  translate("General Setup"))
-		s:tab("advanced", translate("Advanced Settings"))
+--		s:tab("advanced", translate("Advanced Settings"))
 
 		function s.filter(self, section)
 			return m2.uci:get("dhcp", section, "interface") == arg[1]
 		end
 
-		local ignore = s:taboption("general", Flag, "ignore",
-			translate("Ignore interface"),
-			translate("Disable <abbr title=\"Dynamic Host Configuration Protocol\">DHCP</abbr> for " ..
-				"this interface."))
+--		local ignore = s:taboption("general", Flag, "ignore",
+--			translate("Ignore interface"),
+--			translate("Disable <abbr title=\"Dynamic Host Configuration Protocol\">DHCP</abbr> for " ..
+--				"this interface."))
 
 		local start = s:taboption("general", Value, "start", translate("Start"),
 			translate("Lowest leased address as offset from the network address."))
@@ -369,7 +376,7 @@ if has_dnsmasq and net:proto() == "static" then
 		ltime.rmempty = true
 		ltime.default = "12h"
 
-		local dd = s:taboption("advanced", Flag, "dynamicdhcp",
+--[[		local dd = s:taboption("advanced", Flag, "dynamicdhcp",
 			translate("Dynamic <abbr title=\"Dynamic Host Configuration Protocol\">DHCP</abbr>"),
 			translate("Dynamically allocate DHCP addresses for clients. If disabled, only " ..
 				"clients having static leases will be served."))
@@ -399,7 +406,7 @@ if has_dnsmasq and net:proto() == "static" then
 				n:depends("ignore", "")
 			end
 		end
-
+]]--
 	else
 		m2 = nil
 	end
