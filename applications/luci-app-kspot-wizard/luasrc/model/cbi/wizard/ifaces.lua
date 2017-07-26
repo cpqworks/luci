@@ -178,7 +178,7 @@ end
 m.on_init = set_status
 m.on_after_save = set_status
 
-p = s:option("general", ListValue, "proto", translate("Protocol"))
+p = s:taboption("general", ListValue, "proto", translate("Protocol"))
 p.default = net:proto()
 p:value("dhcp", "DHCP Client")    
 p:value("static", "Static Address")       
